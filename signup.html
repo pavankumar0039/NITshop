@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+    <div class="signupmaincontainer">
+        <div class="signupcontianer1">
+            <label class="labelusername" for="username">Username:</label>
+            <input type="text" class="username" name="username">
+        </div>
+        <div class="signupcontianer2">
+            <label class="labelemail" for="email">Email:</label>
+            <input type="text" class="email" name="email">
+        </div>
+        <div class="signupcontianer3">
+            <label class="labelpassword" for="password">Password:</label>
+            <input type="text" class="password" name="password">
+        </div>
+        <div class="signupcontianer3">
+            <label class="labelconnformpassword" for="conformpassword">ConformPassword:</label>
+            <input type="text" class="conformpassword" name="conformpassword">
+        </div>
+        <div class="signupcontianer4">
+            <label class="labelmobilenumber" for="mobilenumber">Enter Mobile Number:</label>
+            <input type="text" class="mobilenumber" name="mobilenumber">
+        </div>
+        <label class="labeldiscription" for="discription">Discription:</label>
+        <form class="message_form">
+            <textarea name="message" rows="1" placeholder="Give further information about you"
+                class="discription"></textarea>
+        </form>
+        <div class="signupcontianer6">
+            <button class="signup">Sign-up</button>
+        </div>
+    </div>
+</body>
+<script>
+    // var username=document.querySelector("username");
+    // var email=document.querySelector("email");
+    // var password=document.querySelector("password");
+    // var phonenumber=document.querySelector("mobilenumber");
+    // var discription=document.querySelector("discription");
+    var signupbutton = document.querySelector(".signup");
+    signupbutton.addEventListener("click", (event) => {
+        event.preventDefault();
+        var username = document.querySelector(".username").value;
+        var email = document.querySelector(".email").value;
+        var password = document.querySelector(".password").value;
+        var conformpassword=document.querySelector(".conformpassword").value;
+        var phonenumber = document.querySelector(".mobilenumber").value;
+        var discription = document.querySelector(".discription").value;
+
+        const formData = new URLSearchParams();
+        formData.append('Username', username);
+        formData.append('Email', email);
+        formData.append('Password', password);
+        formData.append('Phonenumber', phonenumber);
+        formData.append('Discription', discription);
+        const formData1=new URLSearchParams();
+        formData1.append('Email', email);
+        if (password != conformpassword) {
+            alert('password mismatch with conformpassword');
+            return;
+        }
+
+        fetch(`http://localhost:4141/signupdetailcheck`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString(),
+        })
+            .then(response => response.text())
+            .then(message => {
+                if (message === "Record exists. Redirecting...") {
+                    alert('this entry already exits')
+                } else {
+                    fetch(`http://localhost:4141/creatingindividualstudentdatabase`,{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formData1.toString(),
+                    })
+                    .then(response => response.text())
+                        .then(message => {
+                            alert('succesfully created')
+
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    fetch(`http://localhost:4141/insertsignupdetails`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formData.toString(),
+                    })
+                        .then(response => response.text())
+                        .then(message => {
+                            alert('succesfully registered')
+
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+
+</html>

@@ -1,0 +1,95 @@
+.signupmaincontainer {
+    width: 300px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.signupcontianer1,
+.signupcontianer2,
+.signupcontianer3,
+.signupcontianer4,
+.signupcontianer5,
+.signupcontianer6 {
+    margin-bottom: 15px;
+}
+
+.labelusername,
+.labelemail,
+.labelpassword,
+.labelconnformpassword,
+.labelmobilenumber,
+.labeldiscription {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.username,
+.email,
+.password,
+.conformpassword,
+.mobilenumber {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.messages_flow{ 
+    grid-area: messages_flow; 
+    width: 100%; 
+    height: 100% ;
+    border-radius: 10px; 
+    overflow-y: auto;
+    margin: auto;
+    display:flex; 
+    flex-direction : column; 
+    align-items: end; 
+    justify-content: flex-end;
+    background-color: white;  
+    padding-top: 1em;
+    padding: 15px 10px  ; 
+
+}
+
+.message_form { 
+   
+    grid-area: message_form;  
+    width:  100% ;
+    word-wrap: break-word;  
+    display:flex; 
+    justify-content: center;
+    align-items: center;  
+}
+
+.message_form  textarea { 
+    padding: 2px;
+    width:  100%; 
+    height: 7em;
+    margin-right: 1em;
+    margin-top: 0.5em;
+    resize: none;
+}
+
+form, input, textarea { 
+    border-radius: 10px; 
+}
+
+button {
+    margin: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}

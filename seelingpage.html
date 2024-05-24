@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Image Upload</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <!-- Your custom CSS -->
+    <style>
+        /* Add your custom CSS styles here */
+        .sellercontainer {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sellercontainer input[type="text"],
+        .sellercontainer input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .imageinput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .imagecontainer {
+            margin-top: 20px;
+        }
+
+        .imagefilestore {
+            display: inline-block;
+            margin-right: 10px;
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .fa-square-xmark {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sellercontainer">
+
+        <div class="sellername">
+            <input class="productname" type="text" placeholder="Product Name">
+        </div>
+        <div class="Productprice">
+            <input class="productprice" type="text" placeholder="Product Price">
+        </div>
+        <div class="discription">
+            <textarea class="productdis" name="" id="" cols="30" rows="10"></textarea>
+        </div>
+
+
+        <h2>Upload Your Images</h2>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <div id="imageUploadContainer">
+
+                <input class="imageinput" type="url" name="images[]" multiple placeholder="Enter Image URL">
+            </div>
+
+          
+
+            <button type="button" onclick="addImageUpload()">addimage</button>
+        </form>
+
+
+        <div class="imagecontainer"></div>
+
+
+        <div class="discriptonofproduct"></div>
+
+
+        <button onclick="upload()">Submit</button>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js"></script>
+
+
+    <script>
+        var str1 = "";
+        function addImageUpload() {
+            var imageget = document.querySelector(".imageinput").value;
+            var imagcont = document.querySelector(".imagecontainer");
+            var str = `<p class="imagefilestore">${imageget}</p><i class="fas fa-times fa-square-xmark" onclick="removeImage(this)"></i>`;
+
+            imagcont.innerHTML += str;
+            updateStr1();
+        }
+
+        function removeImage(element) {
+            element.previousSibling.remove();
+            element.remove();
+            updateStr1();
+        }
+
+        function updateStr1() {
+            str1 = "";
+            var imagetext = document.querySelectorAll(".imagefilestore");
+            for (var i = 0; i < imagetext.length; i++) {
+                str1 += imagetext[i].textContent + "!";
+            }
+            console.log(str1);
+        }
+        function upload() {
+            var productname = document.querySelector(".productname").value;
+            var productprice = document.querySelector(".productprice").value;
+            var productdis = document.querySelector(".productdis").value;
+            var imagecontainer = document.getElementsByClassName("imagecontainer");
+            var email = localStorage.getItem('data');
+            var imagetext = document.querySelectorAll(".imagefilestore");
+            var imagestring = "";
+            for (var i = 0; i < imagetext.length; i++) {
+                imagestring += imagetext[i].textContent + "!";
+            }
+            document.querySelector(".productname").value = "";
+            document.querySelector(".productprice").value = "";
+            document.querySelector(".productdis").value = "";
+            document.getElementsByClassName("imagecontainer").innerHTML= "";
+            document.querySelector(".imageinput").value = "";
+            const formdata = new URLSearchParams();
+            formdata.append('Productname', productname);
+            formdata.append('Productprice', productprice);
+            formdata.append('Productdis', productdis);
+            formdata.append('Email', email);
+            formdata.append('Productimages', imagestring);
+            fetch(`http://localhost:4141/insertingproductdetails`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formdata.toString(),
+            })
+                .then(response => response.text())
+                .then(message => {
+                    if (message === "Records inserted successfully.") {
+                       
+                    } else {
+                        alert("failed");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+
+    </script>
+</body>
+
+</html>
